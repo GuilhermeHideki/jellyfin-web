@@ -36,7 +36,7 @@ const options = {
         query: ['src/standalone.js', 'src/scripts/apploader.js']
     },
     css: {
-        query: ['src/**/*.css', 'src/**/*.scss']
+        query: ['src/**/*.css', 'src/**/*.scss', '!src/stylesheets/**/*']
     },
     html: {
         query: ['src/**/*.html', '!src/index.html']
