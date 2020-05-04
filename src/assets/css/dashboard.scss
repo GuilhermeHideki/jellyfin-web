@@ -1,127 +1,173 @@
-.dashboardColumn,
-.dashboardSections {
-    flex-direction: column;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
+@import '../../stylesheets/mixins.scss';
+
+$btn-border-radius: 0.3125em;
+
+:root {
+    --progress-bar-background-color: #ccc;
+    --progress-bar-color: #00a4dc;
 }
 
-.dashboardFooter {
-    margin-top: 3.5em;
-    text-align: center;
-}
+.dashboard {
+    &Column {
+        -webkit-box-direction: normal;
+        -webkit-box-flex: 1;
+        -webkit-box-orient: vertical;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 0;
+    }
 
-.dashboardFooter a {
-    margin: 0 0.7em;
+    &Document {
+        .dashboardEntryHeaderButton,
+        .lnkManageServer {
+            display: none !important;
+        }
+    }
+
+    &Footer {
+        margin-top: 3.5em;
+        text-align: center;
+
+        a {
+            margin: 0 0.7em;
+        }
+    }
+
+    &NowPlaying {
+        &InnerContent {
+            @include position(absolute, $top: 0, $right: 0, $bottom: 0, $left: 0);
+            font-weight: 400;
+        }
+
+        &Content-withbackground + .sessionNowPlayingInnerContent {
+            color: #fff !important;
+            background: rgba(0, 0, 0, 0.7);
+        }
+    }
+
+    &Section {
+        flex-shrink: 0;
+        margin: 0 0 2em;
+
+        @media all and (min-width: 70em) {
+            padding: 0 1.5em;
+        }
+
+        & h3 {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+    }
+
+    &Sections {
+        display: flex;
+        flex-direction: column;
+
+        @media all and (min-width: 70em) {
+            flex-wrap: wrap;
+            flex-direction: row;
+        }
+    }
 }
 
 progress {
     appearance: none;
-    -moz-appearance: none;
-    -webkit-appearance: none;
     margin: 0;
-    background: #ccc !important;
-}
+    background: var(--progress-bar-background-color) !important;
 
-progress[role]::after {
-    background-image: none;
-}
+    &[aria-valuenow]::before {
+        border-radius: 0.4em;
+        background-color: var(--progress-bar-color);
+    }
 
-progress::-webkit-progress-bar {
-    background: #ccc;
-}
+    &[role]::after {
+        background-image: none;
+    }
 
-progress::-moz-progress-bar {
-    background-color: #00a4dc;
-}
+    &::-moz-progress-bar {
+        background-color: var(--progress-bar-color);
+    }
 
-progress::-webkit-progress-value {
-    background-color: #00a4dc;
-}
+    &::-webkit-progress-bar {
+        background: var(--progress-bar-background-color);
+    }
 
-progress[aria-valuenow]::before {
-    border-radius: 0.4em;
-    background-color: #00a4dc;
+    &::-webkit-progress-value {
+        background-color: var(--progress-bar-color);
+    }
 }
 
 .localnav {
     margin-bottom: 2.2em !important;
 }
 
-@media all and (min-width: 50em) {
-    .type-interior > div[data-role=content],
-    .type-interior > .ui-panel-content-wrap > div[data-role=content] {
-        padding-right: 0;
-        padding-left: 0;
-        padding-top: 0;
-        overflow: hidden;
+.type-interior {
+    @media all and (min-width: 50em) {
+        > div[data-role="content"],
+        > .ui-panel-content-wrap > div[data-role="content"] {
+            padding-right: 0;
+            padding-left: 0;
+            padding-top: 0;
+            overflow: hidden;
+        }
     }
-}
-
-.dashboardDocument .dashboardEntryHeaderButton,
-.dashboardDocument .lnkManageServer {
-    display: none !important;
 }
 
 .adminDrawerLogo {
     display: none;
+
+    .layout-mobile & {
+        padding: 1.5em 1em 1.2em;
+        border-bottom: 1px solid #e0e0e0;
+        margin-bottom: 1em;
+        display: block;
+    }
+
+    img {
+        height: 4em;
+    }
 }
 
-.layout-mobile .adminDrawerLogo {
-    padding: 1.5em 1em 1.2em;
-    border-bottom: 1px solid #e0e0e0;
-    margin-bottom: 1em;
-    display: block;
-}
-
-.adminDrawerLogo img {
-    height: 4em;
-}
-
-a[data-role=button] {
-    background: #292929 !important;
-    background-clip: padding-box;
+a[data-role="button"] {
+    -webkit-background-clip: padding-box;
     -webkit-font-smoothing: antialiased;
     -webkit-user-select: none;
-    -webkit-background-clip: padding-box;
+    background: #292929 !important;
+    background-clip: padding-box;
     cursor: pointer !important;
+    display: inline-block;
     font-family: inherit !important;
     font-weight: 500 !important;
     margin: 0 0.25em !important;
-    display: inline-block;
     padding: 0.8em 1em;
     text-align: center;
     text-decoration: none !important;
 }
 
-div[data-role=controlgroup] a[data-role=button] {
+div[data-role="controlgroup"] a[data-role="button"] {
+    border-radius: 0;
+    box-shadow: none !important;
     display: inline-block !important;
     margin: 0 !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-    -webkit-border-radius: 0;
-    border-radius: 0;
+
+    &:first-child {
+        border-bottom-left-radius: $btn-border-radius;
+        border-top-left-radius: $btn-border-radius;
+    }
+
+    &:last-child {
+        border-bottom-right-radius: $btn-border-radius;
+        border-top-right-radius: $btn-border-radius;
+    }
+
+    + a[data-role="button"] {
+        border-left-width: 0 !important;
+        margin: 0 0 0 -0.4em !important;
+    }
 }
 
-div[data-role=controlgroup] a[data-role=button]:first-child {
-    -webkit-border-bottom-left-radius: 0.3125em;
-    border-bottom-left-radius: 0.3125em;
-    -webkit-border-top-left-radius: 0.3125em;
-    border-top-left-radius: 0.3125em;
-}
-
-div[data-role=controlgroup] a[data-role=button]:last-child {
-    -webkit-border-bottom-right-radius: 0.3125em;
-    border-bottom-right-radius: 0.3125em;
-    -webkit-border-top-right-radius: 0.3125em;
-    border-top-right-radius: 0.3125em;
-}
-
-div[data-role=controlgroup] a[data-role=button] + a[data-role=button] {
-    border-left-width: 0 !important;
-    margin: 0 0 0 -0.4em !important;
-}
-
-div[data-role=controlgroup] a.ui-btn-active {
+div[data-role="controlgroup"] a.ui-btn-active {
     background: #00a4dc !important;
     color: #292929 !important;
 }
@@ -146,105 +192,48 @@ div[data-role=controlgroup] a.ui-btn-active {
 
 .header .imageLink {
     display: inline-block;
-}
 
-.header .imageLink img {
-    height: 2.1em;
-    vertical-align: middle;
+    img {
+        height: 2.1em;
+        vertical-align: middle;
+    }
 }
 
 .content-primary {
     padding-top: 6em;
     padding-right: 1em;
     padding-left: 1em;
-}
 
-.withTabs .content-primary {
-    padding-top: 9em !important;
-}
-
-@media all and (min-width: 40em) {
-    .content-primary {
+    @media all and (min-width: 40em) {
         padding-top: 4.6em;
     }
 
-    .withTabs .content-primary {
-        padding-top: 10em !important;
+    .withTabs & {
+        padding-top: 9em !important;
+
+        @media all and (min-width: 40em) {
+            padding-top: 10em !important;
+        }
+
+        @media all and (min-width: 84em) {
+            padding-top: 7em !important;
+        }
     }
-}
 
-@media all and (min-width: 84em) {
-    .withTabs .content-primary {
-        padding-top: 7em !important;
+    ul:first-child {
+        margin-top: 0;
     }
-}
-
-.content-primary ul:first-child {
-    margin-top: 0;
-}
-
-.dashboardSections {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-}
-
-.dashboardColumn {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-    -webkit-flex-shrink: 0;
-    flex-shrink: 0;
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-    flex-grow: 1;
-}
-
-.sessionNowPlayingContent {
-    -webkit-background-size: cover;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.activeSession:not(.playingSession) .sessionNowPlayingContent {
-    display: none;
-}
-
-.dashboardSection {
-    -webkit-flex-shrink: 0;
-    flex-shrink: 0;
-    margin: 0 0 2em;
-}
-
-.dashboardSection h3 {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
 }
 
 .activeRecordingItems > .card {
     width: 50%;
+
+    @media all and (min-width: 70em) {
+        width: 25%;
+    }
 }
 
 @media all and (min-width: 70em) {
-    .dashboardSections {
-        -webkit-flex-wrap: wrap;
-        flex-wrap: wrap;
-        -webkit-box-orient: horizontal;
-        -webkit-box-direction: normal;
-        -webkit-flex-direction: row;
-        flex-direction: row;
-    }
-
     .dashboardColumn-2-60 {
         width: 46%;
     }
@@ -256,25 +245,23 @@ div[data-role=controlgroup] a.ui-btn-active {
     .dashboardSection {
         padding: 0 1.5em;
     }
+}
 
-    .activeRecordingItems > .card {
-        width: 25%;
+.wizard {
+    &Content {
+        max-width: 62em;
+        padding: 0.5em 2em 1em;
+        margin: 0 auto;
+        background: #fff;
+
+        & form {
+            max-width: 100%;
+        }
     }
-}
 
-.wizardContent {
-    max-width: 62em;
-    padding: 0.5em 2em 1em;
-    margin: 0 auto;
-    background: #fff;
-}
-
-.wizardNavigation {
-    text-align: right;
-}
-
-.wizardContent form {
-    max-width: 100%;
+    &Navigation {
+        text-align: right;
+    }
 }
 
 .scheduledTaskPaperIconItem {
@@ -283,36 +270,36 @@ div[data-role=controlgroup] a.ui-btn-active {
 
 .activeSession {
     width: 100% !important;
-}
 
-.activitylogUserPhoto {
-    height: 1.71em;
-    width: 1.71em;
-    border-radius: 100%;
-    margin-right: 0.5em;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-@media all and (min-width: 40em) {
-    .activeSession {
+    @media all and (min-width: 40em) {
         width: 100% !important;
     }
-}
 
-@media all and (min-width: 50em) {
-    .activeSession {
+    @media all and (min-width: 50em) {
         width: 50% !important;
     }
 }
 
-.sessionCardFooter {
-    padding-top: 0.5em !important;
-    padding-bottom: 1em !important;
-    border-top: 1px solid #eee;
-    text-align: center;
-    position: relative;
+.activitylogUserPhoto {
+    @include background-cover(center);
+
+    height: 1.71em;
+    width: 1.71em;
+    border-radius: 100%;
+    margin-right: 0.5em;
+}
+
+.sessionAppName {
+    vertical-align: top;
+    max-width: 200px;
+
+    @media all and (max-width: 31.25em) {
+        max-width: 150px;
+    }
+
+    @media all and (max-width: 34.375em) {
+        max-width: 160px;
+    }
 }
 
 .sessionAppInfo {
@@ -320,55 +307,58 @@ div[data-role=controlgroup] a.ui-btn-active {
     overflow: hidden;
 }
 
-.sessionCardButtons {
-    min-height: 2.7em;
+.sessionCard {
+    &Button {
+        margin: 0;
+    }
+
+    &Buttons {
+        min-height: 2.7em;
+    }
+
+    &Footer {
+        padding-top: 0.5em !important;
+        padding-bottom: 1em !important;
+        border-top: 1px solid #eee;
+        text-align: center;
+        position: relative;
+    }
 }
 
-.sessionCardButton {
-    margin: 0;
-}
+.sessionNowPlaying {
+    &Content {
+        -webkit-background-size: cover;
+        @include background-cover(center center);
+        @include position(absolute, $top: 0, $left: 0, $right: 0, $bottom: 0);
 
-.sessionNowPlayingInnerContent {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    font-weight: 400;
-}
+        .activeSession:not(.playingSession) & {
+            display: none;
+        }
+    }
 
-.sessionNowPlayingContent-withbackground + .sessionNowPlayingInnerContent {
-    color: #fff !important;
-    background: rgba(0, 0, 0, 0.7);
-}
+    &Details {
+        display: flex;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
 
-.sessionAppName {
-    vertical-align: top;
-    max-width: 200px;
-}
+    &Info {
+        flex-grow: 1;
+        text-overflow: ellipsis;
+        padding: 0.8em 0.5em;
+    }
 
-.sessionNowPlayingDetails {
-    display: flex;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
+    &Time {
+        flex-shrink: 0;
+        align-self: flex-end;
+        text-overflow: ellipsis;
+        padding: 0.8em 0.5em;
+    }
 
-.sessionNowPlayingInfo {
-    flex-grow: 1;
-    text-overflow: ellipsis;
-    padding: 0.8em 0.5em;
-}
-
-.sessionNowPlayingTime {
-    flex-shrink: 0;
-    align-self: flex-end;
-    text-overflow: ellipsis;
-    padding: 0.8em 0.5em;
-}
-
-.sessionNowPlayingStreamInfo {
-    white-space: nowrap;
+    &StreamInfo {
+        white-space: nowrap;
+    }
 }
 
 .playbackProgress,
@@ -376,87 +366,64 @@ div[data-role=controlgroup] a.ui-btn-active {
     margin: 0;
     width: 100%;
     background: transparent !important;
-}
 
-.activeSession .playbackProgress,
-.activeSession .transcodingProgress {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 6px;
-    width: 100%;
+    .activeSession & {
+        @include position(absolute, $right: 0, $bottom: 0, $left: 0);
+        height: 6px;
+        width: 100%;
+    }
 }
 
 .playbackProgress > div {
     z-index: 1000;
-    background-color: #00a4dc;
+    background-color: var(--progress-bar-color);
 }
 
 .transcodingProgress > div {
     background-color: #dd4919;
 }
 
-@media all and (max-width: 34.375em) {
-    .sessionAppName {
-        max-width: 160px;
-    }
-}
-
-@media all and (max-width: 31.25em) {
-    .sessionAppName {
-        max-width: 150px;
-    }
-}
-
 .disabledUser {
-    -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
-}
 
-.disabledUserBanner {
-    margin: 0 0 2em;
+    &Banner {
+        margin: 0 0 2em;
+    }
 }
 
 .appLinks a {
     text-decoration: none !important;
-}
 
-.appLinks a + a {
-    margin-left: 5px;
+    + a {
+        margin-left: 5px;
+    }
 }
 
 @-webkit-keyframes rotating {
     from {
-        -webkit-transform: rotate(0);
         transform: rotate(0);
     }
 
     to {
-        -webkit-transform: rotate(360deg);
         transform: rotate(360deg);
     }
 }
 
 @keyframes rotating {
     from {
-        -webkit-transform: rotate(0);
         transform: rotate(0);
     }
 
     to {
-        -webkit-transform: rotate(360deg);
         transform: rotate(360deg);
     }
 }
 
 .rotatingCircle {
-    -webkit-animation: rotating 2s linear infinite;
     animation: rotating 2s linear infinite;
 }
 
 .pluginPreviewImg {
-    -webkit-box-shadow: 0 0.0725em 0.29em 0 rgba(0, 0, 0, 0.37);
     box-shadow: 0 0.0725em 0.29em 0 rgba(0, 0, 0, 0.37);
 }
 
